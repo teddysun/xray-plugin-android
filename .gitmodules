@@ -1,0 +1,3 @@
+[submodule "app/src/main/go/xray-plugin"]
+	path = app/src/main/go/xray-plugin
+	url = https://github.com/teddysun/xray-plugin
