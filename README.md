@@ -21,7 +21,7 @@ This plugin is an official plugin thus you can see [shadowsocks-android](https:/
 ## OPEN SOURCE LICENSES
 
 <ul>
-    <li>v2ray: <a href="https://raw.githubusercontent.com/XTLS/Xray-core/main/LICENSE">MIT</a></li>
+    <li>Xray-core: <a href="https://raw.githubusercontent.com/XTLS/Xray-core/main/LICENSE">MIT</a></li>
 </ul>
 
 ### LICENSE
