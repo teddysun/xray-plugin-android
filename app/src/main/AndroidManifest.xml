@@ -1,0 +1,49 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.github.shadowsocks.plugin.xray"
+          android:installLocation="internalOnly">
+    <uses-feature android:name="android.hardware.touchscreen"
+                  android:required="false"/>
+    <application android:allowBackup="false"
+                 android:extractNativeLibs="true"
+                 android:label="xray"
+                 android:icon="@mipmap/ic_launcher">
+        <provider android:name="com.github.shadowsocks.plugin.xray.BinaryProvider"
+                  android:exported="true"
+                  android:directBootAware="true"
+                  android:authorities="com.github.shadowsocks.plugin.xray.BinaryProvider"
+                  tools:ignore="ExportedContentProvider">
+            <intent-filter>
+                <action android:name="com.github.shadowsocks.plugin.ACTION_NATIVE_PLUGIN"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.github.shadowsocks.plugin.ACTION_NATIVE_PLUGIN"/>
+                <data android:scheme="plugin"
+                      android:host="com.github.shadowsocks"
+                      android:path="/xray"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.github.shadowsocks.plugin.ACTION_NATIVE_PLUGIN"/>
+                <data android:scheme="plugin"
+                      android:host="com.github.shadowsocks"
+                      android:path="/xray-plugin"/>
+            </intent-filter>
+            <meta-data android:name="com.github.shadowsocks.plugin.id"
+                       android:value="xray-plugin"/>
+            <meta-data android:name="com.github.shadowsocks.plugin.id.aliases"
+                       android:value="xray"/>
+            <meta-data android:name="com.github.shadowsocks.plugin.executable_path"
+                       android:value="libxray.so"/>
+        </provider>
+        <activity android:name="com.github.shadowsocks.plugin.xray.ConfigActivity"
+                  android:theme="@style/Theme.Shadowsocks.Immersive">
+            <intent-filter>
+                <action android:name="com.github.shadowsocks.plugin.ACTION_CONFIGURE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="plugin"
+                      android:host="com.github.shadowsocks"
+                      android:path="/xray-plugin"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
