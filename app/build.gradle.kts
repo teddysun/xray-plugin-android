@@ -15,8 +15,6 @@ val currentFlavor get() = gradle.startParameter.taskRequests.toString().let { ta
     }
 }
 
-val minSdk = 21
-
 android {
     val javaVersion = JavaVersion.VERSION_1_8
     compileSdkVersion(29)
@@ -27,7 +25,7 @@ android {
     kotlinOptions.jvmTarget = javaVersion.toString()
     defaultConfig {
         applicationId = "com.github.shadowsocks.plugin.xray"
-        minSdkVersion(minSdk)
+        minSdkVersion(21)
         targetSdkVersion(29)
         versionCode = 1030000
         versionName = "1.3.0"
