@@ -35,6 +35,7 @@ android {
         getByName("release") {
             isShrinkResources = true
             isMinifyEnabled = true
+            isZipAlignEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
