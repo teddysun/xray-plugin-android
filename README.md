@@ -26,5 +26,7 @@ This is an unofficial plugin for [shadowsocks-android](https://github.com/shadow
 ### CONTRIBUTORS
 
 Copyright (C) 2019 by Max Lv <<max.c.lv@gmail.com>>
+
 Copyright (C) 2019 by Mygod Studio <<contact-shadowsocks-android@mygod.be>>
+
 Copyright (C) 2021 by Teddysun <<i@teddysun.com>>
