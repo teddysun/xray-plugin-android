@@ -1,4 +1,4 @@
-## [xray-plugin](https://github.com/teddysun/xray-plugin) for [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
+## <img src="app/src/main/web_hi_res_512.png" alt="[logo]" width="96"/> [xray-plugin](https://github.com/teddysun/xray-plugin) for [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
 
 ### PREREQUISITES
 
