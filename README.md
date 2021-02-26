@@ -1,4 +1,4 @@
-## <img src="app/src/main/web_hi_res_512.png" alt="[logo]" width="96"/> [xray-plugin](https://github.com/teddysun/xray-plugin) for [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
+# <img src="app/src/main/web_hi_res_512.png" alt="[logo]" width="48"/> [xray-plugin](https://github.com/teddysun/xray-plugin) for [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android)
 
 ### PREREQUISITES
 
@@ -18,7 +18,7 @@ You can check whether the latest commit builds under UNIX environment by checkin
 
 This is an unofficial plugin for [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android).
 
-## OPEN SOURCE LICENSES
+### OPEN SOURCE LICENSES
 
 * [Xray-core](https://github.com/xtls/xray-core): [MPL 2.0](https://github.com/XTLS/Xray-core/blob/main/LICENSE)
 * [xray-plugin](https://github.com/teddysun/xray-plugin): [MIT](https://github.com/teddysun/xray-plugin/blob/main/LICENSE)
