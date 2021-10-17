@@ -42,6 +42,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
     private val mode by lazy { findPreference<ListPreference>("mode")!! }
     private val host by lazy { findPreference<EditTextPreference>("host")!! }
     private val path by lazy { findPreference<EditTextPreference>("path")!! }
+    private val serviceName by lazy { findPreference<EditTextPreference>("serviceName")!! }
     private val mux by lazy { findPreference<EditTextPreference>("mux")!! }
     private val certRaw by lazy { findPreference<EditTextPreference>("certRaw")!! }
     private val loglevel by lazy { findPreference<ListPreference>("loglevel")!! }
@@ -65,6 +66,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
         putWithDefault("host", host.text, "cloudflare.com")
         putWithDefault("path", path.text, "/")
         putWithDefault("mux", mux.text, "1")
+        putWithDefault("serviceName", serviceName.text, "")
         putWithDefault("certRaw", certRaw.text?.replace("\n", ""), "")
         putWithDefault("loglevel", loglevel.value, "warning")
     }
@@ -81,6 +83,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
         path.text = options["path"] ?: "/"
         mux.text = options["mux"] ?: "1"
         certRaw.text = options["certRaw"]
+        serviceName.text = options["serviceName"]
         loglevel.value = options["loglevel"] ?: "warning"
     }
 
@@ -106,6 +109,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
         val (mode, tls) = readMode(newValue as String)
         path.isEnabled = mode == null
         mux.isEnabled = mode == null
+        serviceName.isEnabled = mode == "grpc"
         certRaw.isEnabled = mode != null || tls
         return true
     }
