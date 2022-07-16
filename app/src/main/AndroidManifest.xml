@@ -6,7 +6,7 @@
                   android:required="false"/>
     <application android:allowBackup="false"
                  android:extractNativeLibs="true"
-                 android:label="xray"
+                 android:label="xray-plugin"
                  android:icon="@mipmap/ic_launcher">
         <provider android:name="com.github.shadowsocks.plugin.xray.BinaryProvider"
                   android:exported="true"

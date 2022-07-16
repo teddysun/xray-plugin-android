@@ -17,7 +17,7 @@ val currentFlavor get() = gradle.startParameter.taskRequests.toString().let { ta
 
 android {
     val javaVersion = JavaVersion.VERSION_1_8
-    compileSdkVersion(30)
+    compileSdkVersion(31)
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
@@ -26,9 +26,9 @@ android {
     defaultConfig {
         applicationId = "com.github.shadowsocks.plugin.xray"
         minSdkVersion(23)
-        targetSdkVersion(30)
-        versionCode = 1050800
-        versionName = "1.5.8"
+        targetSdkVersion(31)
+        versionCode = 1050900
+        versionName = "1.5.9"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
