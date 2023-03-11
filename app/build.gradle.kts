@@ -27,8 +27,8 @@ android {
         applicationId = "com.github.shadowsocks.plugin.xray"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 1070500
-        versionName = "1.7.5"
+        versionCode = 1080000
+        versionName = "1.8.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -69,7 +69,7 @@ tasks.whenTaskAdded {
 dependencies {
     implementation(kotlin("stdlib-jdk8", rootProject.extra.get("kotlinVersion").toString()))
     implementation("androidx.preference:preference:1.1.1")
-    implementation("com.github.shadowsocks:plugin:2.0.0")
+    implementation("com.github.shadowsocks:plugin:2.0.1")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:runner:1.3.0")
