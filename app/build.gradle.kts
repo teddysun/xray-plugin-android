@@ -27,8 +27,8 @@ android {
         applicationId = "com.github.shadowsocks.plugin.xray"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 1081700
-        versionName = "1.8.17"
+        versionCode = 1082400
+        versionName = "1.8.24"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
