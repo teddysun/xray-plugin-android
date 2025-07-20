@@ -20,12 +20,13 @@
 
 package com.github.shadowsocks.plugin.xray
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -35,10 +36,6 @@ import com.github.shadowsocks.plugin.PluginOptions
 import com.google.android.material.snackbar.Snackbar
 
 class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
-    companion object {
-        const val REQUEST_BROWSE_CERTIFICATE = 1
-    }
-
     private val mode by lazy { findPreference<ListPreference>("mode")!! }
     private val host by lazy { findPreference<EditTextPreference>("host")!! }
     private val path by lazy { findPreference<EditTextPreference>("path")!! }
@@ -63,7 +60,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
         val (mode, tls) = readMode()
         putWithDefault("mode", mode)
         if (tls) this["tls"] = null
-        putWithDefault("host", host.text, "cloudflare.com")
+        putWithDefault("host", host.text, "cloudfront.com")
         putWithDefault("path", path.text, "/")
         putWithDefault("mux", mux.text, "1")
         putWithDefault("serviceName", serviceName.text, "")
@@ -78,8 +75,8 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
             options["mode"] == "grpc" && "tls" !in options -> "grpc"
             options["mode"] == "grpc" && "tls" in options -> "grpc-tls"
             else -> "websocket-http"
-        }.also { onPreferenceChange(null, it) }
-        host.text = options["host"] ?: "cloudflare.com"
+        }.also { onModeChange(it) }
+        host.text = options["host"] ?: "cloudfront.com"
         path.text = options["path"] ?: "/"
         mux.text = options["mux"] ?: "1"
         certRaw.text = options["certRaw"]
@@ -100,42 +97,41 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listView.setOnApplyWindowInsetsListener { v, insets ->
-            insets.apply { v.updatePadding(bottom = systemWindowInsetBottom) }
+        ViewCompat.setOnApplyWindowInsetsListener(listView) { v, insets ->
+            insets.apply {
+                v.updatePadding(bottom = getInsets(WindowInsetsCompat.Type.navigationBars()).bottom)
+            }
         }
     }
 
-    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-        val (mode, tls) = readMode(newValue as String)
+    private fun onModeChange(modeValue: String) {
+        val (mode, tls) = readMode(modeValue)
         path.isEnabled = mode == null
         mux.isEnabled = mode == null
         serviceName.isEnabled = mode == "grpc"
         certRaw.isEnabled = mode != null || tls
+    }
+    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
+        onModeChange(newValue as String)
         return true
     }
 
-    override fun onDisplayPreferenceDialog(preference: Preference?) {
+    override fun onDisplayPreferenceDialog(preference: Preference) {
         if (preference == certRaw) CertificatePreferenceDialogFragment().apply {
             setKey(certRaw.key)
             setTargetFragment(this@ConfigFragment, 0)
-        }.show(fragmentManager ?: return, certRaw.key) else super.onDisplayPreferenceDialog(preference)
+        }.show(parentFragmentManager, certRaw.key) else super.onDisplayPreferenceDialog(preference)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_BROWSE_CERTIFICATE -> {
-                if (resultCode != Activity.RESULT_OK) return
-                val activity = requireActivity()
-                try {
-                    // we read all its content here to avoid content URL permission issues
-                    certRaw.text = activity.contentResolver.openInputStream(data!!.data!!)!!
-                            .bufferedReader().readText()
-                } catch (e: RuntimeException) {
-                    Snackbar.make(activity.findViewById(R.id.content), e.localizedMessage ?: e.javaClass.name,
-                            Snackbar.LENGTH_LONG).show()
-                }
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
+    val browseCertificate = registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+        result ?: return@registerForActivityResult
+        val activity = requireActivity()
+        try {
+            // we read all its content here to avoid content URL permission issues
+            certRaw.text = activity.contentResolver.openInputStream(result)!!.bufferedReader().readText()
+        } catch (e: RuntimeException) {
+            Snackbar.make(activity.findViewById(R.id.content), e.localizedMessage ?: e.javaClass.name,
+                Snackbar.LENGTH_LONG).show()
         }
     }
 }

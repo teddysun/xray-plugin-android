@@ -1,32 +1,22 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
-import com.android.build.VariantOutput
 import org.apache.tools.ant.taskdefs.condition.Os
-import java.util.Locale
 
 plugins {
     id("com.android.application")
     kotlin("android")
 }
 
-val flavorRegex = "(assemble|generate)\\w*(Release|Debug)".toRegex()
-val currentFlavor get() = gradle.startParameter.taskRequests.toString().let { task ->
-    flavorRegex.find(task)?.groupValues?.get(2)?.toLowerCase(Locale.ROOT) ?: "debug".also {
-        println("Warning: No match found for $task")
-    }
-}
-
 android {
     val javaVersion = JavaVersion.VERSION_1_8
-    compileSdkVersion(30)
+    compileSdk = 35
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
     kotlinOptions.jvmTarget = javaVersion.toString()
+    namespace = "com.github.shadowsocks.plugin.xray"
     defaultConfig {
-        applicationId = "com.github.shadowsocks.plugin.xray"
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 35
         versionCode = 1082400
         versionName = "1.8.24"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -44,9 +34,9 @@ android {
             isUniversalApk = true
         }
     }
-    sourceSets.getByName("main") {
-        jniLibs.setSrcDirs(jniLibs.srcDirs + files("$projectDir/build/go"))
-    }
+    sourceSets.getByName("main").jniLibs.srcDirs(files("$projectDir/build/go"))
+    ndkVersion = "27.3.13750724"
+    packagingOptions.jniLibs.useLegacyPackaging = true
 }
 
 tasks.register<Exec>("goBuild") {
@@ -54,7 +44,7 @@ tasks.register<Exec>("goBuild") {
         println("Warning: Building on Windows is not supported")
     } else {
         executable("/bin/bash")
-        args("go-build.bash", 23)
+        args("go-build.bash", android.defaultConfig.minSdk)
         environment("ANDROID_HOME", android.sdkDirectory)
         environment("ANDROID_NDK_HOME", android.ndkDirectory)
     }
@@ -67,20 +57,11 @@ tasks.whenTaskAdded {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", rootProject.extra.get("kotlinVersion").toString()))
-    implementation("androidx.preference:preference:1.1.1")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("androidx.preference:preference:1.2.1")
     implementation("com.github.shadowsocks:plugin:2.0.1")
     implementation("com.takisoft.preferencex:preferencex-simplemenu:1.1.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-}
-
-val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" to 4)
-if (currentFlavor == "release") android.applicationVariants.all {
-    for (output in outputs) {
-        abiCodes[(output as ApkVariantOutputImpl).getFilter(VariantOutput.ABI)]?.let { offset ->
-            output.versionCodeOverride = versionCode + offset
-        }
-    }
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }

@@ -1,14 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.github.shadowsocks.plugin.xray"
           android:installLocation="internalOnly">
     <uses-feature android:name="android.hardware.touchscreen"
                   android:required="false"/>
     <application android:allowBackup="false"
-                 android:extractNativeLibs="true"
                  android:label="xray-plugin"
                  android:icon="@mipmap/ic_launcher">
-        <provider android:name="com.github.shadowsocks.plugin.xray.BinaryProvider"
+        <provider android:name=".BinaryProvider"
                   android:exported="true"
                   android:directBootAware="true"
                   android:authorities="com.github.shadowsocks.plugin.xray.BinaryProvider"
@@ -35,7 +33,8 @@
             <meta-data android:name="com.github.shadowsocks.plugin.executable_path"
                        android:value="libxray.so"/>
         </provider>
-        <activity android:name="com.github.shadowsocks.plugin.xray.ConfigActivity"
+        <activity android:name=".ConfigActivity"
+                  android:exported="true"
                   android:theme="@style/Theme.Shadowsocks.Immersive">
             <intent-filter>
                 <action android:name="com.github.shadowsocks.plugin.ACTION_CONFIGURE"/>

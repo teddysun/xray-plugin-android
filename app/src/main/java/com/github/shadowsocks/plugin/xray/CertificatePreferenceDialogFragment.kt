@@ -21,10 +21,10 @@
 package com.github.shadowsocks.plugin.xray
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
+import com.github.shadowsocks.plugin.R
 import com.google.android.material.snackbar.Snackbar
 
 class CertificatePreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat() {
@@ -37,10 +37,7 @@ class CertificatePreferenceDialogFragment : EditTextPreferenceDialogFragmentComp
         builder.setNeutralButton(R.string.browse) { _, _ ->
             val activity = requireActivity()
             try {
-                targetFragment!!.startActivityForResult(Intent(Intent.ACTION_GET_CONTENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "application/pkix-cert"
-                }, ConfigFragment.REQUEST_BROWSE_CERTIFICATE)
+                (targetFragment as ConfigFragment).browseCertificate.launch("application/pkix-cert")
                 return@setNeutralButton
             } catch (_: ActivityNotFoundException) { } catch (_: SecurityException) { }
             Snackbar.make(activity.findViewById(R.id.content), R.string.file_manager_missing, Snackbar.LENGTH_SHORT)

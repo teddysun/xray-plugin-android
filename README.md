@@ -2,10 +2,10 @@
 
 ### PREREQUISITES
 
-* JDK 1.8
-* Go 1.21+
+* JDK 17
+* Go 1.23+
 * Android SDK
-  - Android NDK r19+
+  - Android NDK r27+
 
 ### BUILD
 
