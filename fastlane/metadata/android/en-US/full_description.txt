@@ -1,0 +1,1 @@
+<p>This is an unofficial SIP003 plugin based on Xray-core for <a href='https://github.com/shadowsocks/shadowsocks-android' target='_blank' rel='nofollow'>shadowsocks-android</a>.</p>
