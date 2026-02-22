@@ -28,8 +28,14 @@ import com.github.shadowsocks.plugin.R
 import com.google.android.material.snackbar.Snackbar
 
 class CertificatePreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat() {
+    private var parentFragment: ConfigFragment? = null
+
     fun setKey(key: String) {
         arguments = bundleOf(Pair(ARG_KEY, key))
+    }
+
+    fun setParentFragment(fragment: ConfigFragment) {
+        parentFragment = fragment
     }
 
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
@@ -37,7 +43,7 @@ class CertificatePreferenceDialogFragment : EditTextPreferenceDialogFragmentComp
         builder.setNeutralButton(R.string.browse) { _, _ ->
             val activity = requireActivity()
             try {
-                (targetFragment as ConfigFragment).browseCertificate.launch("application/pkix-cert")
+                parentFragment?.browseCertificate?.launch("application/pkix-cert")
                 return@setNeutralButton
             } catch (_: ActivityNotFoundException) { } catch (_: SecurityException) { }
             Snackbar.make(activity.findViewById(R.id.content), R.string.file_manager_missing, Snackbar.LENGTH_SHORT)

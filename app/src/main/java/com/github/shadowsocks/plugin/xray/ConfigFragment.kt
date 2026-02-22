@@ -119,7 +119,7 @@ class ConfigFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChange
     override fun onDisplayPreferenceDialog(preference: Preference) {
         if (preference == certRaw) CertificatePreferenceDialogFragment().apply {
             setKey(certRaw.key)
-            setTargetFragment(this@ConfigFragment, 0)
+            setParentFragment(this@ConfigFragment)
         }.show(parentFragmentManager, certRaw.key) else super.onDisplayPreferenceDialog(preference)
     }
 

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
@@ -7,17 +8,19 @@ plugins {
 
 android {
     val javaVersion = JavaVersion.VERSION_1_8
-    compileSdk = 35
+    compileSdk = 36
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    kotlinOptions.jvmTarget = javaVersion.toString()
+    kotlin {
+        compilerOptions.jvmTarget = JvmTarget.JVM_1_8
+    }
     namespace = "com.github.shadowsocks.plugin.xray"
     defaultConfig {
         minSdk = 23
-        targetSdk = 35
-        versionCode = 1082400
+        targetSdk = 36
+        versionCode = 1082401
         versionName = "1.8.24"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
