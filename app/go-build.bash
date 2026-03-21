@@ -10,20 +10,20 @@ MIN_API="$1"
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OUT_DIR="$ROOT/build/go"
 
-cd "$ROOT/src/main/go/xray-plugin"
+cd "$ROOT/src/main/go/xray-plugin" || exit 1
 BIN="libxray.so"
 for i in "${!ABIS[@]}"; do
     ABI="${ABIS[$i]}"
     [[ -f "${OUT_DIR}/${ABI}/${BIN}" ]] && continue
     echo "Build ${BIN} ${ABI}"
-    mkdir -p ${OUT_DIR}/${ABI} \
+    mkdir -p "${OUT_DIR}/${ABI}" \
     && env \
         CGO_ENABLED=1 CC="${TOOLCHAIN}/${CLANG_ARCHS[$i]}${MIN_API}-clang" \
-        GOOS=android GOARCH=${GO_ARCHS[$i]} \
+        GOOS=android GOARCH="${GO_ARCHS[$i]}" \
         go build -v -ldflags='-s -w' -o "${OUT_DIR}/unstripped" \
     && "${TOOLCHAIN}/llvm-strip" "${OUT_DIR}/unstripped" -o "${OUT_DIR}/${ABI}/${BIN}" \
-    || exit -1
+    || exit 1
     rm "${OUT_DIR}/unstripped"
 done
 
-cd "$ROOT"
+cd "$ROOT" || exit 1
